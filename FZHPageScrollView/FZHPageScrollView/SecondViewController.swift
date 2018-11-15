@@ -22,4 +22,9 @@ class SecondViewController: UIViewController {
         view.addSubview(fzh_button)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
 }

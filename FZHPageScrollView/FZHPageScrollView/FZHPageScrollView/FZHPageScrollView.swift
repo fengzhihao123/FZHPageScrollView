@@ -22,13 +22,16 @@ class FZHPageScrollView: UIView {
     private var titleButtons = [UIButton]()
     private var titleButtonFont: CGFloat = 16
     private var titleButtonMarginX: CGFloat = 5
+    public var titleNormalTitleColor = UIColor.brown
+    public var titleSelectTitleColor = UIColor.blue
     public var titleNormalFont = UIFont.systemFont(ofSize: 15)
     public var titleSelectFont = UIFont.systemFont(ofSize: 17)
     private var titleButtonH: CGFloat = 20
+    private var lastSelectButton: UIButton!
     //titleBottomSlider
     private let bottomSliderView = UIView()
     public let bottomSliderViewMarginY: CGFloat = 5
-    public let bottomSliderViewBgColor = UIColor.yellow
+    public let bottomSliderViewBgColor = UIColor.cyan
     
     //contentView
     var contentCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -63,13 +66,20 @@ class FZHPageScrollView: UIView {
             let titleButtonY = (titleScrollView.frame.height - titleButtonH)/2
             titleButton.frame = CGRect(x: buttonMarginX, y: titleButtonY, width: titleButtonW, height: titleButtonH)
             buttonMarginX = titleButton.frame.origin.x + titleButton.frame.size.width + titleButtonMarginX
-            titleButton.backgroundColor = UIColor.blue
             titleButton.tag = titles.firstIndex(of: title)!
             titleButton.setTitle(title, for: .normal)
+            titleButton.setTitleColor(titleNormalTitleColor, for: .normal)
+            titleButton.setTitleColor(titleSelectTitleColor, for: .selected)
             titleButton.titleLabel?.font = titleNormalFont
             titleButton.addTarget(self, action: #selector(titleButtonClick(button:)), for: .touchUpInside)
             titleButtons.append(titleButton)
             titleScrollView.addSubview(titleButton)
+        }
+        
+        if let first = titleButtons.first {
+            first.isSelected = true
+            first.titleLabel?.font = titleSelectFont
+            lastSelectButton = first
         }
         setupBottomSliderView()
         titleScrollView.contentSize = CGSize(width: buttonMarginX, height: 0)
@@ -79,7 +89,7 @@ class FZHPageScrollView: UIView {
     func setupBottomSliderView() {
         if let firstButton = titleButtons.first {
             let bottomSliderViewY = firstButton.frame.origin.y + firstButton.frame.size.height + bottomSliderViewMarginY
-            bottomSliderView.frame = CGRect(x: 0, y: bottomSliderViewY, width: 50, height: 5)
+            bottomSliderView.frame = CGRect(x: 0, y: bottomSliderViewY, width: 10, height: 5)
             bottomSliderView.center.x = firstButton.center.x
             bottomSliderView.backgroundColor = bottomSliderViewBgColor
             titleScrollView.addSubview(bottomSliderView)
@@ -104,13 +114,26 @@ class FZHPageScrollView: UIView {
         addSubview(contentCollectionView)
     }
     
+    func changeButtonState(button: UIButton) {
+        lastSelectButton.isSelected = false
+        lastSelectButton.titleLabel?.font = titleNormalFont
+        
+        button.titleLabel?.font = titleSelectFont
+        button.isSelected = true
+        lastSelectButton = button
+    }
+    
     //MARK: event
-    func setupBottomSliderViewX(tagetButton: UIButton) {
-        bottomSliderView.center.x = tagetButton.center.x
+    func setupBottomSliderViewX(button: UIButton) {
+        changeButtonState(button: button)
+        UIView.animate(withDuration: 0.25) {
+            self.bottomSliderView.center.x = button.center.x
+        }
     }
     
     @objc func titleButtonClick(button: UIButton) {
-        setupBottomSliderViewX(tagetButton: button)
+        changeButtonState(button: button)
+        setupBottomSliderViewX(button: button)
         contentCollectionView.selectItem(at: IndexPath(row: button.tag, section: 0), animated: true, scrollPosition: .centeredHorizontally)
     }
     
@@ -121,21 +144,14 @@ class FZHPageScrollView: UIView {
 
 extension FZHPageScrollView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-//        if scrollView is UICollectionView {
-//            let scrollDirection = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-//
-//            let contentOffsetX = scrollView.contentOffset.x
-//            let screenScale = contentOffsetX.truncatingRemainder(dividingBy: kScreenW)
-//            let index = (contentOffsetX / kScreenW).rounded(.towardZero)
-//            if screenScale > kScreenW/2 { //大于半屏
-//                if scrollDirection.x < 0 {
-//                    setupBottomSliderViewX(tagetButton: titleButtons[Int(index) + 1])
-//                } else {
-//                    setupBottomSliderViewX(tagetButton: titleButtons[Int(index)])
-//                }
-//            }
-//        }
+        if scrollView is UICollectionView {
+            let contentOffsetX = scrollView.contentOffset.x
+            let screenScale = contentOffsetX.truncatingRemainder(dividingBy: kScreenW)
+            let index = (contentOffsetX / kScreenW).rounded(.towardZero)
+            if screenScale == 0 {
+                setupBottomSliderViewX(button: titleButtons[Int(index)])
+            }
+        }
     }
 }
 
@@ -154,7 +170,7 @@ extension FZHPageScrollView:  UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row >= titleButtons.count { return }
-        setupBottomSliderViewX(tagetButton: titleButtons[indexPath.row])
+        setupBottomSliderViewX(button: titleButtons[indexPath.row])
     }
     
 }
