@@ -19,7 +19,7 @@ class DisplayViewController: UIViewController {
     }
     
     func setupPageScrollView() {
-        let pageView = FZHPageScrollView(frame: CGRect(x: 0, y: 64, width: kScreenW, height: kScreenH - 64))
+        let pageView = FZHPageScrollView(frame: CGRect(x: 0, y: 64, width: kScreenW, height: kScreenH - 64), pageScrollViewSuperVC: self)
         pageView.backgroundColor = UIColor.red
         pageView.titles = ["斧王","露娜","月之女祭司"]
         let vc = SecondViewController()
@@ -28,5 +28,9 @@ class DisplayViewController: UIViewController {
         pageView.childVCs = [vc, vc1, vc2]
         
         view.addSubview(pageView)
+    }
+    
+    deinit {
+        print("=============deinit")
     }
 }

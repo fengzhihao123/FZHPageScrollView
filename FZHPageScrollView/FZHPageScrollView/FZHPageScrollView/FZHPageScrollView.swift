@@ -40,12 +40,21 @@ class FZHPageScrollView: UIView {
             contentCollectionView.reloadData()
         }
     }
+    //public property
+    weak var pageScrollViewSuperVC: UIViewController!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, pageScrollViewSuperVC: UIViewController) {
         super.init(frame: frame)
+        self.pageScrollViewSuperVC = pageScrollViewSuperVC
         setupTitleView()
         setupContentCollectionView()
     }
+    
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setupTitleView()
+//        setupContentCollectionView()
+//    }
     
     //MARK: 设置titleView
     func setupTitleView() {
@@ -163,6 +172,7 @@ extension FZHPageScrollView:  UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UICollectionViewCell", for: indexPath)
         let vc = childVCs[indexPath.row]
+        pageScrollViewSuperVC.addChild(vc)
         vc.view.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
         cell.addSubview(vc.view)
         return cell

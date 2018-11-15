@@ -18,8 +18,16 @@ class SecondViewController: UIViewController {
         let fzh_button = UIButton(type: .custom)
         fzh_button.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
         fzh_button.backgroundColor = UIColor.blue
+        fzh_button.addTarget(self, action: #selector(buttonClick), for: .touchUpInside)
         fzh_button.setTitle("second", for: .normal)
         view.addSubview(fzh_button)
+        
+    }
+    
+    @objc func buttonClick() {
+        if let parentVC = parent {
+            parentVC.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
