@@ -14,6 +14,7 @@
 		D607292B219179330052A907 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6072929219179330052A907 /* LaunchScreen.storyboard */; };
 		D607293321917A1D0052A907 /* FZHPageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D607293221917A1D0052A907 /* FZHPageScrollView.swift */; };
 		D607293621917D880052A907 /* String+CalaulateSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D607293521917D880052A907 /* String+CalaulateSize.swift */; };
+		D6664E4F21A3E08A00734705 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6664E4E21A3E08A00734705 /* DetailViewController.swift */; };
 		D68D987421918EE500300CBA /* FirstTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68D987321918EE500300CBA /* FirstTableViewController.swift */; };
 		D6C8672A2192ED7300BC29A9 /* DisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C867292192ED7300BC29A9 /* DisplayViewController.swift */; };
 		D6C8672C2192F43E00BC29A9 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8672B2192F43E00BC29A9 /* SecondViewController.swift */; };
@@ -30,6 +31,7 @@
 		D607292C219179330052A907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D607293221917A1D0052A907 /* FZHPageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FZHPageScrollView.swift; sourceTree = "<group>"; };
 		D607293521917D880052A907 /* String+CalaulateSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CalaulateSize.swift"; sourceTree = "<group>"; };
+		D6664E4E21A3E08A00734705 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D68D987321918EE500300CBA /* FirstTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTableViewController.swift; sourceTree = "<group>"; };
 		D6C867292192ED7300BC29A9 /* DisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayViewController.swift; sourceTree = "<group>"; };
 		D6C8672B2192F43E00BC29A9 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				D68D987321918EE500300CBA /* FirstTableViewController.swift */,
 				D6C8672B2192F43E00BC29A9 /* SecondViewController.swift */,
 				D6C8672D2192F44700BC29A9 /* ThirdViewController.swift */,
+				D6664E4E21A3E08A00734705 /* DetailViewController.swift */,
 			);
 			path = FZHPageScrollView;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6664E4F21A3E08A00734705 /* DetailViewController.swift in Sources */,
 				D6072923219179300052A907 /* ViewController.swift in Sources */,
 				D6C8672A2192ED7300BC29A9 /* DisplayViewController.swift in Sources */,
 				D607293321917A1D0052A907 /* FZHPageScrollView.swift in Sources */,

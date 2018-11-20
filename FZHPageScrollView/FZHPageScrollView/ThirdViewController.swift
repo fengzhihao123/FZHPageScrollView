@@ -18,8 +18,13 @@ class ThirdViewController: UIViewController {
         let fzh_button = UIButton(type: .custom)
         fzh_button.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
         fzh_button.backgroundColor = UIColor.blue
+        fzh_button.addTarget(self, action: #selector(buttonClick), for: .touchUpInside)
         fzh_button.setTitle("third", for: .normal)
         view.addSubview(fzh_button)
+    }
+    
+    @objc func buttonClick() {
+        navigationController?.pushViewController(DetailViewController(), animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

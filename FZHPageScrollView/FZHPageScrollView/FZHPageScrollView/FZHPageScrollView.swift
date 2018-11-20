@@ -28,6 +28,7 @@ class FZHPageScrollView: UIView {
     public var titleSelectFont = UIFont.systemFont(ofSize: 17)
     private var titleButtonH: CGFloat = 20
     private var lastSelectButton: UIButton!
+    private var oldOffSetX: CGFloat = 0
     //titleBottomSlider
     private let bottomSliderView = UIView()
     public let bottomSliderViewMarginY: CGFloat = 5
@@ -37,7 +38,11 @@ class FZHPageScrollView: UIView {
     var contentCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var childVCs = [UIViewController]() {
         didSet {
-            contentCollectionView.reloadData()
+            if childVCs.count != titles.count {
+                fatalError("标题与子控制器数量不一致！！！")
+            } else {
+                contentCollectionView.reloadData()
+            }
         }
     }
     //public property
@@ -49,12 +54,6 @@ class FZHPageScrollView: UIView {
         setupTitleView()
         setupContentCollectionView()
     }
-    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setupTitleView()
-//        setupContentCollectionView()
-//    }
     
     //MARK: 设置titleView
     func setupTitleView() {
@@ -77,6 +76,7 @@ class FZHPageScrollView: UIView {
             buttonMarginX = titleButton.frame.origin.x + titleButton.frame.size.width + titleButtonMarginX
             titleButton.tag = titles.firstIndex(of: title)!
             titleButton.setTitle(title, for: .normal)
+            titleButton.adjustsImageWhenHighlighted = false
             titleButton.setTitleColor(titleNormalTitleColor, for: .normal)
             titleButton.setTitleColor(titleSelectTitleColor, for: .selected)
             titleButton.titleLabel?.font = titleNormalFont
@@ -98,7 +98,7 @@ class FZHPageScrollView: UIView {
     func setupBottomSliderView() {
         if let firstButton = titleButtons.first {
             let bottomSliderViewY = firstButton.frame.origin.y + firstButton.frame.size.height + bottomSliderViewMarginY
-            bottomSliderView.frame = CGRect(x: 0, y: bottomSliderViewY, width: 10, height: 5)
+            bottomSliderView.frame = CGRect(x: 0, y: bottomSliderViewY, width: firstButton.frame.size.width, height: 5)
             bottomSliderView.center.x = firstButton.center.x
             bottomSliderView.backgroundColor = bottomSliderViewBgColor
             titleScrollView.addSubview(bottomSliderView)
@@ -136,6 +136,7 @@ class FZHPageScrollView: UIView {
     func setupBottomSliderViewX(button: UIButton) {
         changeButtonState(button: button)
         UIView.animate(withDuration: 0.25) {
+            self.bottomSliderView.frame.size.width = button.frame.size.width
             self.bottomSliderView.center.x = button.center.x
         }
     }
@@ -151,8 +152,26 @@ class FZHPageScrollView: UIView {
     }
 }
 
+//MARK: UIScrollViewDelegate
+
 extension FZHPageScrollView: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        oldOffSetX = scrollView.contentOffset.x
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView is UICollectionView {
+//            let contentOffsetX = scrollView.contentOffset.x
+//            let screenScale = contentOffsetX.truncatingRemainder(dividingBy: kScreenW)
+//            let index = (contentOffsetX / kScreenW).rounded(.towardZero)
+//            if screenScale == 0 {
+//                setupBottomSliderViewX(button: titleButtons[Int(index)])
+//            }
+//        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        //更新title位置
         if scrollView is UICollectionView {
             let contentOffsetX = scrollView.contentOffset.x
             let screenScale = contentOffsetX.truncatingRemainder(dividingBy: kScreenW)
@@ -164,7 +183,7 @@ extension FZHPageScrollView: UIScrollViewDelegate {
     }
 }
 
-extension FZHPageScrollView:  UICollectionViewDelegate, UICollectionViewDataSource {
+extension FZHPageScrollView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return childVCs.count
     }
